@@ -2,7 +2,7 @@ import React from "react";
 
 export default function TableComponent({ data = [] }) {
   return (
-    <div>
+    <div id="wrapper">
       <table>
         <thead>
           <tr>

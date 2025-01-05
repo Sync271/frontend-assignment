@@ -8,11 +8,28 @@ table {
   width: 100%;
 }
 
+#wrapper {
+  overflow: auto;
+  width: 100vw;
+  height: calc(100vh - 0px);
+}
+
 td,
 th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
+}
+
+thead {
+  top: 0;
+  background-color: white;
+}
+
+th {
+  position: sticky;
+  background-color: white;
+  top: 0;
 }
 
 tr:nth-child(even) {
