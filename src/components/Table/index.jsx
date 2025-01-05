@@ -22,8 +22,6 @@ export default function TableComponent({ data = [] }) {
 
   const onColumnsChange = (newColumns) => setColumns(newColumns);
 
-  console.log(cellToHighlight);
-
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
       <ColumnSelection
@@ -36,7 +34,13 @@ export default function TableComponent({ data = [] }) {
           <thead>
             <tr>
               {columns?.map((value) => (
-                <th key={value}>{columnPrettyNameMap[value]}</th>
+                <th
+                  key={value}
+                  tabIndex={0}
+                  aria-label={columnPrettyNameMap[value]}
+                >
+                  {columnPrettyNameMap[value]}
+                </th>
               ))}
             </tr>
           </thead>
@@ -48,6 +52,8 @@ export default function TableComponent({ data = [] }) {
               )
               ?.map?.((row, rowIndex) => (
                 <tr
+                  aria-label={`Row ${rowIndex + 1}`}
+                  tabIndex={0}
                   style={{
                     background: rowIndex === cellToHighlight.row ? "grey" : "",
                     // background: "grey",
@@ -56,6 +62,8 @@ export default function TableComponent({ data = [] }) {
                   {columns?.map((value) => (
                     <td
                       key={value}
+                      tabIndex={0}
+                      aria-label={`${columnPrettyNameMap[value]} - ${row?.[value]}`}
                       style={{
                         background:
                           value === cellToHighlight.column ? "grey" : "",

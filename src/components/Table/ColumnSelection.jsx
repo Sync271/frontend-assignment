@@ -18,9 +18,20 @@ function ColumnSelection({ defaultColumns = [], onChange, columns = [] }) {
     }
   };
 
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onToggleCheckbox(e);
+    }
+  };
+
   return (
     <div>
-      <button onClick={onToggleCollapse}>
+      <button
+        onClick={onToggleCollapse}
+        tabIndex={0}
+        aria-label="select columns to display"
+        type="button"
+      >
         Select Columns {collapsed ? "+" : "-"}
       </button>
       {!collapsed && (
@@ -30,15 +41,19 @@ function ColumnSelection({ defaultColumns = [], onChange, columns = [] }) {
             gridTemplateColumns: "auto auto auto auto",
           }}
         >
-          {Object.entries(columnPrettyNameMap).map(([key, value]) => (
+          {Object.entries(columnPrettyNameMap).map(([key, value], index) => (
             <div key={key}>
               <label>{value}</label>
               <input
+                tabIndex={0}
                 type="checkbox"
+                aria-label={`column: ${value}`}
                 data-key={key}
                 defaultChecked={defaultColumns.includes(key)}
+                onKeyDown={onKeyDown}
                 onChange={onToggleCheckbox}
-                // checked={columns.includes(key)}
+                onClick={console.log}
+                checked={columns.includes(key)}
               ></input>
             </div>
           ))}

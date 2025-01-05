@@ -21,6 +21,12 @@ export default function Pagination({
     }
   };
 
+  const onKeyDown = (e) => {
+    if (e.key === "Enter") {
+      onPageClick(e);
+    }
+  };
+
   const onLimitChange = (e) => {
     onChange({ limit: e.target.value, page: 1 });
   };
@@ -30,11 +36,15 @@ export default function Pagination({
       <ul style={{ display: "flex", gap: ".1rem" }}>
         <li
           key="<"
+          aria-label="previous page"
+          tabIndex={0}
+          role="button"
           className={`pagination-item page-number ${
             page === 1 ? "disabled" : ""
           }`}
           disabled={page === 1}
           onClick={onPageClick}
+          onKeyDown={onKeyDown}
         >
           {"<"}
         </li>
@@ -52,10 +62,14 @@ export default function Pagination({
             return (
               <li
                 key={index + 1}
+                aria-label={`page ${index + 1}`}
+                tabIndex={0}
+                role="button"
                 className={`pagination-item page-number ${
                   page === index + 1 ? "active" : ""
                 }`}
                 onClick={onPageClick}
+                onKeyDown={onKeyDown}
               >
                 {index + 1}
               </li>
@@ -72,7 +86,6 @@ export default function Pagination({
                 className={`non-button pagination-item ${
                   page === index + 1 ? "active" : ""
                 }`}
-                onClick={onPageClick}
               >
                 ...
               </li>
@@ -82,10 +95,14 @@ export default function Pagination({
         })}
         <li
           key=">"
+          aria-label="next page"
+          role="button"
+          tabIndex={0}
           className={`pagination-item page-number ${
             page === totalPages ? "disabled" : ""
           }`}
           onClick={onPageClick}
+          onKeyDown={onKeyDown}
         >
           {">"}
         </li>
