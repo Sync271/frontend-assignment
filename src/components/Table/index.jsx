@@ -11,11 +11,18 @@ export default function TableComponent({ data = [] }) {
     "amt.pledged",
   ]);
 
+  const [cellToHighlight, setCellToHighlight] = useState({
+    row: "",
+    column: "",
+  });
+
   const onPaginationChange = (changedPagination) => {
     setPagination(changedPagination);
   };
 
   const onColumnsChange = (newColumns) => setColumns(newColumns);
+
+  console.log(cellToHighlight);
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
@@ -39,10 +46,29 @@ export default function TableComponent({ data = [] }) {
                 (pagination?.page - 1) * pagination?.limit,
                 pagination?.page * pagination?.limit
               )
-              ?.map?.((row) => (
-                <tr>
+              ?.map?.((row, rowIndex) => (
+                <tr
+                  style={{
+                    background: rowIndex === cellToHighlight.row ? "grey" : "",
+                    // background: "grey",
+                  }}
+                >
                   {columns?.map((value) => (
-                    <td key={value}>{row?.[value]}</td>
+                    <td
+                      key={value}
+                      style={{
+                        background:
+                          value === cellToHighlight.column ? "grey" : "",
+                      }}
+                      onMouseEnter={() =>
+                        setCellToHighlight({ row: rowIndex, column: value })
+                      }
+                      onMouseLeave={() => {
+                        setCellToHighlight({ row: "", column: "" });
+                      }}
+                    >
+                      {row?.[value]}
+                    </td>
                   ))}
                 </tr>
               ))}

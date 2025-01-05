@@ -14,7 +14,7 @@ table {
 #wrapper {
   overflow: auto;
   width: 100vw;
-  max-height: 50vh;
+  max-height: 60vh;
 }
 
 td,
