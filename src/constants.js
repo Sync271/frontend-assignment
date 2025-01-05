@@ -1,0 +1,16 @@
+export const columnPrettyNameMap = {
+    "s.no": "S.No",
+    "amt.pledged": "Amount pledged",
+    blurb: "Blurb",
+    by: "By",
+    country: "Country",
+    currency: "Currency",
+    "end.time": "End time",
+    location: "Location",
+    "percentage.funded": "Percentage funded",
+    "num.backers": "Number of backers",
+    state: "State",
+    title: "Title",
+    type: "Type",
+    url: "URL",
+};
