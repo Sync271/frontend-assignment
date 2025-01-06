@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Pagination from "./Pagination";
 import ColumnSelection from "./ColumnSelection";
 import { columnPrettyNameMap } from "../../constants";
+import CustomCell from "./CustomCell";
 
 export default function TableComponent({ data = [] }) {
   const [pagination, setPagination] = useState({ page: 1, limit: 5 });
@@ -32,11 +33,12 @@ export default function TableComponent({ data = [] }) {
       <div id="wrapper">
         <table>
           <thead>
-            <tr>
+            <tr style={{ background: "black" }}>
               {columns?.map((value) => (
                 <th
                   key={value}
                   tabIndex={0}
+                  style={{ zIndex: 1 }}
                   aria-label={columnPrettyNameMap[value]}
                 >
                   {columnPrettyNameMap[value]}
@@ -55,7 +57,7 @@ export default function TableComponent({ data = [] }) {
                   aria-label={`Row ${rowIndex + 1}`}
                   tabIndex={0}
                   style={{
-                    background: rowIndex === cellToHighlight.row ? "grey" : "",
+                    background: rowIndex === cellToHighlight.row ? "#555" : "",
                     // background: "grey",
                   }}
                 >
@@ -65,8 +67,9 @@ export default function TableComponent({ data = [] }) {
                       tabIndex={0}
                       aria-label={`${columnPrettyNameMap[value]} - ${row?.[value]}`}
                       style={{
+                        minWidth: "10rem",
                         background:
-                          value === cellToHighlight.column ? "grey" : "",
+                          value === cellToHighlight.column ? "#555" : "",
                       }}
                       onMouseEnter={() =>
                         setCellToHighlight({ row: rowIndex, column: value })
@@ -75,7 +78,11 @@ export default function TableComponent({ data = [] }) {
                         setCellToHighlight({ row: "", column: "" });
                       }}
                     >
-                      {row?.[value]}
+                      <CustomCell
+                        columnName={value}
+                        value={row?.[value]}
+                        item={row}
+                      />
                     </td>
                   ))}
                 </tr>

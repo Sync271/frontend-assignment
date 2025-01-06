@@ -52,7 +52,6 @@ function ColumnSelection({ defaultColumns = [], onChange, columns = [] }) {
                 defaultChecked={defaultColumns.includes(key)}
                 onKeyDown={onKeyDown}
                 onChange={onToggleCheckbox}
-                onClick={console.log}
                 checked={columns.includes(key)}
               ></input>
             </div>
