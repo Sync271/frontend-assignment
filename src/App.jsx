@@ -14,7 +14,16 @@ function App() {
     })();
   }, []);
 
-  return <TableComponent data={data} />;
+  return (
+    <>
+      <h2>
+        Crowdfunding Projects Summary: Details of Pledged Amounts, Percentage
+        Funded, and More...
+      </h2>
+      <div className="divider"></div>
+      <TableComponent data={data} />
+    </>
+  );
 }
 
 export default App;

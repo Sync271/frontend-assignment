@@ -4,7 +4,7 @@ import ColumnSelection from "./ColumnSelection";
 import { columnPrettyNameMap } from "../../constants";
 import CustomCell from "./CustomCell";
 
-const SORT_DIRECTIONS = [null, "asc", "dsc"];
+const SORT_DIRECTIONS = ["none", "ascending", "descending"];
 
 export default function TableComponent({ data = [] }) {
   const [pagination, setPagination] = useState({ page: 1, limit: 5 });
@@ -51,9 +51,9 @@ export default function TableComponent({ data = [] }) {
       }
     };
 
-    if (SORT_DIRECTIONS[direction] === "asc") {
+    if (SORT_DIRECTIONS[direction] === "ascending") {
       setSortedData([...data].sort((a, b) => sortFn(a, b)));
-    } else if (SORT_DIRECTIONS[direction] === "dsc") {
+    } else if (SORT_DIRECTIONS[direction] === "descending") {
       setSortedData([...data].sort((a, b) => sortFn(b, a)));
     } else {
       setSortedData(data);
@@ -74,18 +74,26 @@ export default function TableComponent({ data = [] }) {
   const onColumnsChange = (newColumns) => setColumns(newColumns);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
+    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <ColumnSelection
         defaultColumns={columns}
         columns={columns}
         onChange={onColumnsChange}
       />
+      <div className="divider"></div>
       <div id="wrapper">
         <table>
           <thead>
-            <tr style={{ background: "black" }}>
+            <tr style={{ background: "black" }} role="row">
               {columns?.map((value) => (
                 <th
+                  role="columnheader"
+                  scope="col"
+                  aria-sort={
+                    value === sortDirection.columnName
+                      ? SORT_DIRECTIONS[sortDirection.direction]
+                      : "none"
+                  }
                   key={value}
                   style={{ zIndex: 1 }}
                   aria-label={columnPrettyNameMap[value]}
@@ -159,6 +167,7 @@ export default function TableComponent({ data = [] }) {
                 >
                   {columns?.map((value) => (
                     <td
+                      role="cell"
                       key={value}
                       aria-label={`${columnPrettyNameMap[value]} - ${row?.[value]}`}
                       style={{
