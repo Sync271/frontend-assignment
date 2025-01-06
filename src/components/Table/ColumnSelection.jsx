@@ -27,6 +27,7 @@ function ColumnSelection({ defaultColumns = [], onChange, columns = [] }) {
   return (
     <div>
       <button
+        className="show-columns-button"
         onClick={onToggleCollapse}
         tabIndex={0}
         aria-label="select columns to display"
@@ -42,8 +43,7 @@ function ColumnSelection({ defaultColumns = [], onChange, columns = [] }) {
           }}
         >
           {Object.entries(columnPrettyNameMap).map(([key, value], index) => (
-            <div key={key}>
-              <label>{value}</label>
+            <div key={key} style={{ display: "flex", alignItems: "center" }}>
               <input
                 tabIndex={0}
                 type="checkbox"
@@ -54,6 +54,7 @@ function ColumnSelection({ defaultColumns = [], onChange, columns = [] }) {
                 onChange={onToggleCheckbox}
                 checked={columns.includes(key)}
               ></input>
+              <label>{value}</label>
             </div>
           ))}
         </div>

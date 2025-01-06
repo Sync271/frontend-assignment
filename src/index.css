@@ -56,6 +56,13 @@ tr:nth-child(odd) {
   background-color: rgb(21, 125, 125);
 }
 
+.pagination-container {
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .pagination-container > ul {
   padding: 0;
 }
@@ -77,4 +84,50 @@ tr:nth-child(odd) {
 .non-button {
   /* background-color: unset; */
   cursor: unset;
+}
+
+.sort-button {
+  all: unset;
+  height: 2rem;
+  width: 2rem;
+  color: white;
+  cursor: pointer;
+  border-radius: 50%;
+  text-align: center;
+  user-select: none;
+  position: relative;
+}
+
+.sort-button:hover {
+  background-color: rgb(141, 193, 193);
+}
+
+.sort-button:focus {
+  background-color: rgb(90, 187, 187);
+}
+
+.sort-active {
+  background-color: rgb(21, 125, 125);
+}
+
+.show-columns-button {
+  margin: 0.5rem;
+  all: unset;
+  color: white;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  user-select: none;
+  background-color: rgb(21, 125, 125);
+}
+
+.show-columns-button:hover {
+  background-color: rgb(141, 193, 193);
+}
+
+input[type="checkbox"] {
+  width: 1.5em;
+  height: 1.5rem;
+  accent-color: rgb(21, 125, 125);
 }

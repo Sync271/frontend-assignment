@@ -115,7 +115,11 @@ export default function Pagination({
         }}
       >
         <label>Select Limit:</label>
-        <select defaultValue={limit} onChange={onLimitChange}>
+        <select
+          defaultValue={limit}
+          onChange={onLimitChange}
+          style={{ height: "2rem", fontSize: "1rem" }}
+        >
           {[5, 10, 25, 50].map((value) => (
             <option key={value} value={value}>
               {value}

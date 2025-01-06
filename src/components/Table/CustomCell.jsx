@@ -18,7 +18,14 @@ function PercentageFunded({ percentage, amountPledged, currency }) {
         / <AmountPledged amount={amountPledged} currency={currency} />)
       </div>
       <div style={{ position: "relative" }}>
-        <div style={{ background: "grey", height: ".5rem", zIndex: -2 }} />
+        <div
+          style={{
+            background: "grey",
+            height: ".5rem",
+            zIndex: -2,
+            borderRadius: ".5rem",
+          }}
+        />
         <div
           style={{
             position: "absolute",
@@ -29,6 +36,7 @@ function PercentageFunded({ percentage, amountPledged, currency }) {
             }%`,
             top: 0,
             zIndex: 0,
+            borderRadius: ".5rem",
           }}
         />
       </div>

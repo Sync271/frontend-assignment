@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Pagination from "./Pagination";
 import ColumnSelection from "./ColumnSelection";
 import { columnPrettyNameMap } from "../../constants";
 import CustomCell from "./CustomCell";
+
+const SORT_DIRECTIONS = [null, "asc", "dsc"];
 
 export default function TableComponent({ data = [] }) {
   const [pagination, setPagination] = useState({ page: 1, limit: 5 });
@@ -11,6 +13,54 @@ export default function TableComponent({ data = [] }) {
     "percentage.funded",
     "amt.pledged",
   ]);
+  const [sortedData, setSortedData] = useState(null);
+  const [sortDirection, setSortDirection] = useState({
+    columnName: "",
+    direction: 0,
+  });
+
+  const onSort = (columnName) => {
+    const direction =
+      sortDirection?.columnName === columnName
+        ? (sortDirection?.direction + 1) % SORT_DIRECTIONS.length
+        : 1;
+
+    const sortFn = (a, b) => {
+      if (
+        ["s.no", "amt.pledged", "num.backers", "percentage.funded"].includes(
+          columnName
+        )
+      ) {
+        return parseInt(a?.[columnName]) - parseInt(b?.[columnName]);
+      } else if (
+        [
+          "blurb",
+          "by",
+          "country",
+          "currency",
+          "location",
+          "state",
+          "title",
+          "type",
+          "url",
+        ].includes(columnName)
+      ) {
+        return a?.[columnName]?.localeCompare(b?.[columnName]);
+      } else {
+        return new Date(a?.[columnName]) - new Date(b?.[columnName]);
+      }
+    };
+
+    if (SORT_DIRECTIONS[direction] === "asc") {
+      setSortedData([...data].sort((a, b) => sortFn(a, b)));
+    } else if (SORT_DIRECTIONS[direction] === "dsc") {
+      setSortedData([...data].sort((a, b) => sortFn(b, a)));
+    } else {
+      setSortedData(data);
+    }
+
+    setSortDirection({ columnName, direction });
+  };
 
   const [cellToHighlight, setCellToHighlight] = useState({
     row: "",
@@ -37,17 +87,65 @@ export default function TableComponent({ data = [] }) {
               {columns?.map((value) => (
                 <th
                   key={value}
-                  tabIndex={0}
                   style={{ zIndex: 1 }}
                   aria-label={columnPrettyNameMap[value]}
                 >
-                  {columnPrettyNameMap[value]}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    {columnPrettyNameMap[value]}
+                    <button
+                      onClick={() => onSort(value)}
+                      type="button"
+                      aria-label={`${value} sort`}
+                      tabIndex={0}
+                      className={`sort-button ${
+                        value === sortDirection.columnName &&
+                        sortDirection.direction !== 0
+                          ? "sort-active"
+                          : ""
+                      }`}
+                    >
+                      {value !== sortDirection.columnName ||
+                      sortDirection.direction === 0 ? (
+                        "="
+                      ) : sortDirection.direction === 1 ? (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "25%",
+                            right: 0,
+                            left: 0,
+                          }}
+                        >
+                          ^
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            transform: "rotate(180deg)",
+                            position: "absolute",
+                            top: 0,
+                            right: 0,
+                            left: 0,
+                            bottom: "25%",
+                          }}
+                        >
+                          ^
+                        </div>
+                      )}
+                    </button>
+                  </div>
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {data
+            {(sortedData || data)
               ?.slice(
                 (pagination?.page - 1) * pagination?.limit,
                 pagination?.page * pagination?.limit
@@ -55,16 +153,13 @@ export default function TableComponent({ data = [] }) {
               ?.map?.((row, rowIndex) => (
                 <tr
                   aria-label={`Row ${rowIndex + 1}`}
-                  tabIndex={0}
                   style={{
                     background: rowIndex === cellToHighlight.row ? "#555" : "",
-                    // background: "grey",
                   }}
                 >
                   {columns?.map((value) => (
                     <td
                       key={value}
-                      tabIndex={0}
                       aria-label={`${columnPrettyNameMap[value]} - ${row?.[value]}`}
                       style={{
                         minWidth: "10rem",
